@@ -36,17 +36,36 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param p			Piece
+	 * @param idx		The column to place a piece on
+//	 * 					Requires 1 - 
+	 */
 	public void add(Piece p, int idx) {
 		this.board.get(idx).push(p);
 		updateViewBoard(idx, this.board.get(idx).indexOf(p), p.getName());
-		printBoard();
+	}
+	
+	public boolean checkFullColumn(int idx) {
+		if (this.board.get(idx).size() < 6) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	private void updateViewBoard(int x, int y, String s) {
-		this.viewBoard[y][x - 1] = s;
+		try {
+			this.viewBoard[y][x - 1] = s;
+		} catch (Exception e){
+			System.out.printf("Y: %s | X: %s", y, x);
+			System.out.println();
+		}
+		
 	}
 	
-	private void printBoard() {
+	public void printBoard() {
 		System.out.println("~~~~~~~~~~~~~~~");
 		System.out.println("~~~~~~~~~~~~~~~");
 		
