@@ -43,12 +43,12 @@ public class Board {
 //	 * 					Requires 1 - 
 	 */
 	public void add(Piece p, int idx) {
-		this.board.get(idx).push(p);
-		updateViewBoard(idx, this.board.get(idx).indexOf(p), p.getName());
+		this.board.get(idx - 1).push(p);
+		updateViewBoard(idx, this.board.get(idx - 1).indexOf(p), p.getName());
 	}
 	
 	public boolean checkFullColumn(int idx) {
-		if (this.board.get(idx).size() < 6) {
+		if (this.board.get(idx - 1).size() < 6) {
 			return false;
 		} else {
 			return true;
@@ -66,8 +66,9 @@ public class Board {
 	}
 	
 	public void printBoard() {
+		System.out.println();
 		System.out.println("~~~~~~~~~~~~~~~");
-		System.out.println("~~~~~~~~~~~~~~~");
+		System.out.println();
 		
 		for (int i = 5; i >= 0; i--) {
 			System.out.print("|");
@@ -78,5 +79,107 @@ public class Board {
 			System.out.println("+-+-+-+-+-+-+-+");
 		}
 		System.out.println("|1|2|3|4|5|6|7|");
+	}
+	
+	public boolean checkWin() {
+		
+		/*	Different functions for every direction
+		 *	Horizontal only checks Columns 1 - 4 for the starting piece
+		 *	Vertical only checks Rows 1-3 for the starting piece
+		 *	Diagonals use both for the starting piece
+		 *		Upper Left to Lower Right checks:
+		 *			Rows 1 - 3, Columns 1 - 4
+		 *		Upper Right to Lower Left checks:
+		 *			Rows 1 - 3, Columns 5 - 7 	
+		 */
+		
+		return (checkWinHori() || checkWinVert() || checkWinULLR() | checkWinURLL());
+	}
+	
+	private boolean checkWinHori() {
+		// Horizontal only checks Columns 1 - 4 for the starting piece
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 4; j++) {
+				String s = this.viewBoard[i][j];
+				
+				if (
+					s.equals(this.viewBoard[i][j]) 		&& 
+					s.equals(this.viewBoard[i][j + 1])	&&
+					s.equals(this.viewBoard[i][j + 2])	&&
+					s.equals(this.viewBoard[i][j  +3]) 	&&
+					!s.equals(" ")
+					) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean checkWinVert() {
+		// Vertical only checks Rows 5 - 3 for the starting piece
+		for (int i = 3; i < 6; i++) {
+			for (int j = 0; j < 7; j++) {
+				String s = this.viewBoard[i][j];
+				if (
+					s.equals(this.viewBoard[i][j]) 		&& 
+					s.equals(this.viewBoard[i - 1][j])	&&
+					s.equals(this.viewBoard[i - 2][j])	&&
+					s.equals(this.viewBoard[i - 3][j]) 	&&
+					!s.equals(" ")
+					) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean checkWinULLR() {
+		/*	Diagonals use both for the starting piece
+		 *		Upper Left to Lower Right checks:
+		 *			Rows 3 - 5, Columns 1 - 4
+		 */
+		for (int i = 3; i < 6; i++) {
+			for (int j = 0; j < 4; j ++) {
+				String s = this.viewBoard[i][j];
+				if (
+					s.equals(this.viewBoard[i][j]) 			&& 
+					s.equals(this.viewBoard[i - 1][j + 1])	&&
+					s.equals(this.viewBoard[i - 2][j + 2])	&&
+					s.equals(this.viewBoard[i - 3][j + 3]) 	&&
+					!s.equals(" ")
+					) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean checkWinURLL() {
+		/*	Diagonals use both for the starting piece
+		 *		Upper Right to Lower Left checks:
+		 *			Rows 3 - 5, Columns 5 - 7
+		 */
+		for (int i = 3; i < 6; i++) {
+			for (int j = 3; j < 7; j ++) {
+				String s = this.viewBoard[i][j];
+				if (
+					s.equals(this.viewBoard[i][j]) 			&& 
+					s.equals(this.viewBoard[i - 1][j - 1])	&&
+					s.equals(this.viewBoard[i - 2][j - 2])	&&
+					s.equals(this.viewBoard[i - 3][j - 3]) 	&&
+					!s.equals(" ")
+					) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 }

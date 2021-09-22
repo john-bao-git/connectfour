@@ -38,7 +38,14 @@ public class Game {
 			  } else {
 				  currPlayer = pOne;
 			  }
+			  
 			  turn(board, currPlayer, sc);
+			  if (board.checkWin()) {
+				  board.printBoard();
+				  System.out.printf("Player %s Wins!", currPlayer.getName());
+				  System.out.println();
+				  break;
+			  }
 			  
 			  turn += 1;
 		}
@@ -51,27 +58,29 @@ public class Game {
 		Piece piece = new Piece(p.getName());
 		
 		boolean fullColumn = true;
-		int idx;
+		String idxString;
+		int idx = -1;
 		
 		do {
 			System.out.printf("Player %s, pick a column: ", p.getName());
-			idx = sc.nextInt();
+			idxString = sc.next();
 			
-			if ((idx < 1) || (7 < idx)) {
-				System.out.println("You must pick a column between 1 and 7. Please try again.");
-			} else {
-				fullColumn = b.checkFullColumn(idx);
-				if (fullColumn) {
-					System.out.printf("Column %s is full. Please try again.", idx);
-					System.out.println();
+			try {
+				idx = Integer.parseInt(idxString);
+				if ((idx < 1) || (7 < idx)) {
+					System.out.println("Invalid selection. Please try again.");
+				} else {
+					fullColumn = b.checkFullColumn(idx);
+					if (fullColumn) {
+						System.out.printf("Column %s is full. Please try again.", idx);
+						System.out.println();
+					} else {
+						b.add(piece, idx);
+					}
 				}
+			} catch (Exception e) {
+				System.out.println("Invalid selection. Please try again.");
 			}
 		} while (fullColumn);
-		
-		b.add(piece, idx);
-	}
-	
-	private static void checkWin(Board b) {
-		
 	}
 }
