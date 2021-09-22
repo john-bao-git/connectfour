@@ -29,9 +29,6 @@ public class Game {
 		
 		Player currPlayer = new Player("");
 		
-		//Do win-con
-		//Make a while loop for the game
-		
 		  while (true) {
 			  if (turn % 2 == 0) {
 				  currPlayer = pTwo;
@@ -59,7 +56,7 @@ public class Game {
 		
 		boolean fullColumn = true;
 		String idxString;
-		int idx = -1;
+		int idx;
 		
 		do {
 			System.out.printf("Player %s, pick a column: ", p.getName());
